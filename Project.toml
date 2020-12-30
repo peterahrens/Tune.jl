@@ -5,7 +5,6 @@ version = "0.1.0"
 
 [deps]
 CpuId = "adafc99b-e345-5852-983c-f28acb93d879"
-DiskBackedDicts = "a606033f-14ee-4438-ae87-3b404a2b735d"
 Memoize = "c03570c3-d221-55d1-a50c-7939bbd78826"
 Scratch = "6c6a2e73-6563-6170-7368-637461726353"
 UUIDs = "cf7118a7-6976-5b1a-9a39-7adc72f591a4"

@@ -3,8 +3,10 @@ module Tune
 using Memoize
 using CpuId
 using UUIDs
-using DiskBackedDicts
 using Scratch
+
+include("DiskBackedDicts.jl")
+using DiskBackedDicts
 
 export @memoize
 export @Vault
