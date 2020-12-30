@@ -12,12 +12,12 @@ export getarch
 
 vault_name = "" 
 
-function __init__()j
+function __init__()
     global vault_name = get_scratch!(@__MODULE__, "vault")
 end
 
 @memoize function getarch()
-    return uuid5(z, string(cpuinfo()))
+    return uuid5(UUID("2b1b8f36-4a44-11eb-04f1-23588d707498"), string(cpuinfo()))
 end
 
 struct NoEmptyMemoizeDict{K, V, T<:AbstractDict{K, V}} <: AbstractDict{K, V}

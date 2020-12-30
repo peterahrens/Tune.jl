@@ -1,1 +1,0 @@
-This directory is where all the autotuning data gets cached.
