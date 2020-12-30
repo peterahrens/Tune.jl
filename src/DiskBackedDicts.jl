@@ -26,7 +26,6 @@ module DiskBackedDicts
 
 export DiskBackedDict
 
-using ArgCheck
 using JLD2
 
 ################################################################################
@@ -105,8 +104,8 @@ struct FullyCachedDict{K,V,C,S} <: AbstractDict{K,V}
     cache::C
     storage::S
     function FullyCachedDict{K,V}(cache::C, storage::S) where {K,V,C,S}
-        @argcheck keytype(storage) === keytype(cache) === K
-        @argcheck valtype(storage) === valtype(cache) === V
+        @assert keytype(storage) === keytype(cache) === K
+        @assert valtype(storage) === valtype(cache) === V
         empty!(cache)
         _merge!(cache, storage)
         return new{K,V,C,S}(cache, storage)
@@ -114,8 +113,8 @@ struct FullyCachedDict{K,V,C,S} <: AbstractDict{K,V}
 end
 
 function FullyCachedDict(cache, storage)
-    @argcheck keytype(storage) === keytype(cache)
-    @argcheck valtype(storage) === valtype(cache)
+    @assert keytype(storage) === keytype(cache)
+    @assert valtype(storage) === valtype(cache)
     K = keytype(storage)
     V = valtype(storage)
     return FullyCachedDict{K,V}(cache, storage)
@@ -374,15 +373,15 @@ struct CachedDict{K,V,C,S} <: AbstractDict{K,V}
     cache::C
     storage::S
     function CachedDict{K,V}(cache::C, storage::S) where {K,V,C,S}
-        @argcheck keytype(storage) === keytype(cache) === K
-        @argcheck valtype(storage) === valtype(cache) === V
+        @assert keytype(storage) === keytype(cache) === K
+        @assert valtype(storage) === valtype(cache) === V
         return new{K,V,C,S}(cache, storage)
     end
 end
 
 function CachedDict(cache, storage)
-    @argcheck keytype(storage) === keytype(cache)
-    @argcheck valtype(storage) === valtype(cache)
+    @assert keytype(storage) === keytype(cache)
+    @assert valtype(storage) === valtype(cache)
     K = keytype(storage)
     V = valtype(storage)
     return CachedDict{K,V}(cache, storage)

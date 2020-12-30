@@ -1,10 +1,11 @@
 name = "Tune"
 uuid = "fedcd5e3-25fa-4517-9d96-0ffbee4aa29d"
 authors = ["Peter Ahrens"]
-version = "0.1.0"
+version = "0.1.1"
 
 [deps]
 CpuId = "adafc99b-e345-5852-983c-f28acb93d879"
+JLD2 = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
 Memoize = "c03570c3-d221-55d1-a50c-7939bbd78826"
 Scratch = "6c6a2e73-6563-6170-7368-637461726353"
 UUIDs = "cf7118a7-6976-5b1a-9a39-7adc72f591a4"
