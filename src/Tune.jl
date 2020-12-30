@@ -4,13 +4,20 @@ using Memoize
 using CpuId
 using UUIDs
 using DiskBackedDicts
+using Scratch
 
 export @memoize
 export @Vault
 export getarch
 
+vault_name = "" 
+
+function __init__()j
+    global vault_name = get_scratch!(@__MODULE__, "vault")
+end
+
 @memoize function getarch()
-    return uuid5(UUID("2b1b8f36-4a44-11eb-04f1-23588d707498"), string(cpuinfo()))
+    return uuid5(z, string(cpuinfo()))
 end
 
 struct NoEmptyMemoizeDict{K, V, T<:AbstractDict{K, V}} <: AbstractDict{K, V}
@@ -31,7 +38,7 @@ function Base.get!(f::Base.Callable, d::NoEmptyMemoizeDict, key)
     return get!(f, d.parent, key)
 end
 
-function Base.empty!(d::NoEmptyMemoizeDict)
+function Base.empty!(::NoEmptyMemoizeDict)
     return nothing
 end
 
@@ -40,8 +47,8 @@ function sudo_empty!(d::NoEmptyMemoizeDict)
 end
 
 macro Vault()
-    fname = joinpath(@__DIR__, "../data", string(uuid5(UUID("81d1007a-4ac8-11eb-0dd6-151dbad3f71a"), string(__source__.file, "_", __source__.line)), "_vault.jld2"))
-    return :(()->NoEmptyMemoizeDict(DiskBackedDict($fname)))
+    tag_name = string(uuid5(UUID("81d1007a-4ac8-11eb-0dd6-151dbad3f71a"), string(__source__.file, "_", __source__.line)), ".jld2")
+    return :(()->NoEmptyMemoizeDict(DiskBackedDict(joinpath($(Tune).vault_name, $(tag_name)))))
 end
 
 end
