@@ -9,7 +9,7 @@ end
 function main(args)
     @info "step 1" hello_world(10)
     @info "step 2" hello_world(11)
-    @info "step 2" hello_world(10)
+    @info "step 3" hello_world(10)
 end
 
 main(ARGS)
