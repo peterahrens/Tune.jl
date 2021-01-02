@@ -1,7 +1,7 @@
 name = "Tune"
 uuid = "fedcd5e3-25fa-4517-9d96-0ffbee4aa29d"
 authors = ["Peter Ahrens"]
-version = "0.1.2"
+version = "0.1.3"
 
 [deps]
 CpuId = "adafc99b-e345-5852-983c-f28acb93d879"
