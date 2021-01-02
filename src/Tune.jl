@@ -4,8 +4,7 @@ using Memoize
 using CpuId
 using UUIDs
 using Scratch
-
-include("DiskBackedDicts.jl")
+using DiskBackedDicts
 
 export @memoize
 export @Vault
