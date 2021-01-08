@@ -4,10 +4,11 @@ using Memoize
 using CpuId
 using UUIDs
 using Scratch
-using DiskBackedDicts
+using Serialization
 
 export @memoize
 export @Vault
+export Vault
 export arch_id
 
 vault_name = "" 
@@ -20,35 +21,76 @@ end
     return uuid5(UUID("2b1b8f36-4a44-11eb-04f1-23588d707498"), string(cpuinfo()))
 end
 
-struct NoEmptyMemoizeDict{K, V, T<:AbstractDict{K, V}} <: AbstractDict{K, V}
-    parent::T
-end
-
-for f in [:getindex, :keys, :values, :length, :get, :iterate, :delete!, :setindex!, :get!, :empty!]
-    @eval function Base.$f(d::NoEmptyMemoizeDict, args...)
-        $f(d.parent, args...)
+struct Vault{K,V} <: AbstractDict{K,V}
+    path::String
+    data::Dict{K, V}
+    function Vault{K,V}(path::AbstractString) where {K,V}
+        if !(ispath(path))
+            dir = splitdir(path)[1]
+            mkpath(dir)
+            data = Dict{K,V}()
+            open(path, "w") do io
+                serialize(io, data)
+            end
+        end
+        open(path, "r") do io
+            data = deserialize(io)
+        end
+        return new{K,V}(String(path), data)
     end
 end
 
-function Base.get(f::Base.Callable, d::NoEmptyMemoizeDict, key)
-    return get(f, d.parent, key)
+Vault(path) = Vault{Any, Any}(path)
+
+function _vault_save(v::Vault{K, V}) where {K, V}
+    open(v.path, "w") do io
+        serialize(io, v.data)
+    end
 end
 
-function Base.get!(f::Base.Callable, d::NoEmptyMemoizeDict, key)
-    return get!(f, d.parent, key)
+function Base.get!(v::Vault{K, V}, key, default) where {K, V}
+    if haskey(v.data, key)
+        return v.data[key]
+    else
+        v.data[key] = default
+        _vault_save(v)
+        return v.data[key]
+    end
 end
 
-function Base.empty!(::NoEmptyMemoizeDict)
+function Base.get!(f::Union{Function, Type}, v::Vault{K, V}, key) where {K, V}
+    if haskey(v.data, key)
+        return v.data[key]
+    else
+        v.data[key] = f()
+        _vault_save(v)
+        return v.data[key]
+    end
+end
+
+function Base.empty!(v::Vault{K, V}) where {K, V}
     return nothing
 end
 
-function sudo_empty!(d::NoEmptyMemoizeDict)
-    return empty!(d.parent)
+Base.iterate(v::Vault) = iterate(v.data)
+Base.iterate(v::Vault, state) = iterate(v.data, state)
+
+function sudo_empty!(v::Vault{K, V}) where {K, V}
+    empty!(v.data)
+    _vault_save(v)
 end
 
-macro Vault()
-    tag_name = string(uuid5(UUID("81d1007a-4ac8-11eb-0dd6-151dbad3f71a"), string(__source__.file, "_", __source__.line)), ".jld2")
-    return :(()->NoEmptyMemoizeDict($(Tune).DiskBackedDicts.DiskBackedDict(joinpath($(Tune).vault_name, $(tag_name)))))
+macro Vault(args...)
+    if length(args) == 0
+        tag = uuid5(UUID("81d1007a-4ac8-11eb-0dd6-151dbad3f71a"), string(__source__.file, "_", __source__.line))
+    elseif length(args) == 1
+        tag = args[1]
+    else
+        error("too many arguments for macro @Vault")
+    end
+
+    tag_name = string(tag, ".vault")
+    return :(()->Vault(joinpath($(Tune).vault_name, $(tag_name))))
 end
 
 end
