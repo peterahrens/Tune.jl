@@ -1,7 +1,7 @@
 name = "Tune"
 uuid = "fedcd5e3-25fa-4517-9d96-0ffbee4aa29d"
 authors = ["Peter Ahrens"]
-version = "0.1.4"
+version = "0.1.5"
 
 [deps]
 BSON = "fbb218c0-5317-5bc6-957e-2ee96dd4b1f0"
