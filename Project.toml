@@ -4,7 +4,6 @@ authors = ["Peter Ahrens"]
 version = "0.1.5"
 
 [deps]
-BSON = "fbb218c0-5317-5bc6-957e-2ee96dd4b1f0"
 CpuId = "adafc99b-e345-5852-983c-f28acb93d879"
 Memoize = "c03570c3-d221-55d1-a50c-7939bbd78826"
 Scratch = "6c6a2e73-6563-6170-7368-637461726353"
