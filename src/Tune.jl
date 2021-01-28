@@ -1,6 +1,6 @@
 module Tune
 
-using Memoize
+using MemoizedMethods
 using CpuId
 using UUIDs
 using Scratch
