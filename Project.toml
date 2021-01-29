@@ -1,14 +1,16 @@
 name = "Tune"
 uuid = "fedcd5e3-25fa-4517-9d96-0ffbee4aa29d"
 authors = ["Peter Ahrens"]
-version = "0.1.7"
+version = "0.2.0"
 
 [deps]
+BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
 CpuId = "adafc99b-e345-5852-983c-f28acb93d879"
+DiskCaches = "83811839-e1fd-4dfd-90d4-61934971aaca"
+Hwloc = "0e44f5e4-bd66-52a0-8798-143a42290a1d"
 MemoizedMethods = "2f808968-54ae-4603-8d72-6e67d20f0a1c"
+SHA = "ea8e919c-243c-51af-8825-aaa63cd721ce"
 Scratch = "6c6a2e73-6563-6170-7368-637461726353"
-Serialization = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
-UUIDs = "cf7118a7-6976-5b1a-9a39-7adc72f591a4"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
